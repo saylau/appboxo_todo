@@ -3,8 +3,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny
 from rest_framework.pagination import LimitOffsetPagination
 
-from .filters import CategoryListFilter
 from .serializers import CategorySerializer
+from .models import Category
 
 
 class CategoryViewSet(ModelViewSet):
@@ -14,4 +14,3 @@ class CategoryViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     filter_backends = [DjangoFilterBackend]
-    filterset_class = CategoryListFilter

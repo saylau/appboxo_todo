@@ -18,6 +18,7 @@ class Base(Configuration):
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
+        'drf_yasg',
 
         # Your apps
         'apps.users',
@@ -27,7 +28,7 @@ class Base(Configuration):
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
-        'django.middleware.cache.CacheMiddleware'
+        # 'django.middleware.cache.CacheMiddleware'
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
@@ -61,7 +62,7 @@ class Base(Configuration):
     }
 
     # General
-    APPEND_SLASH = False
+    APPEND_SLASH = True
     TIME_ZONE = 'UTC'
     LANGUAGE_CODE = 'en-us'
     # If you set this to False, Django will make some optimizations so as not

@@ -5,6 +5,7 @@ from rest_framework.pagination import LimitOffsetPagination
 
 from .filters import TodoListFilter
 from .serializers import TodoSerializer
+from .models import Todo
 
 
 class TodoViewSet(ModelViewSet):
