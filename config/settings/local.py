@@ -1,13 +1,14 @@
 import os
-from .common import Common
+from .base import Base
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-class Local(Common):
+class Local(Base):
     DEBUG = True
 
+    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '1111')
     # Testing
-    INSTALLED_APPS = Common.INSTALLED_APPS
+    INSTALLED_APPS = Base.INSTALLED_APPS
     INSTALLED_APPS += ('django_nose',)
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
     NOSE_ARGS = [

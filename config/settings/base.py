@@ -1,12 +1,11 @@
 import os
 from os.path import join
 from distutils.util import strtobool
-import dj_database_url
 from configurations import Configuration
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-class Common(Configuration):
+class Base(Configuration):
     INSTALLED_APPS = (
         'django.contrib.admin',
         'django.contrib.auth',
@@ -22,11 +21,13 @@ class Common(Configuration):
 
         # Your apps
         'apps.users',
-
+        'apps.todos',
+        'apps.categories',
     )
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
+        'django.middleware.cache.CacheMiddleware'
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
@@ -48,12 +49,15 @@ class Common(Configuration):
         ('Author', 'richard.hendriks@piedpiper.com'),
     )
 
-    # Postgres
     DATABASES = {
-        'default': dj_database_url.config(
-            default='postgres://postgres:@postgres:5432/postgres',
-            conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv('DB_NAME', 'todo'),
+            'USER': os.getenv('DB_USER', 'todo'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'todo'),
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
     }
 
     # General
@@ -103,20 +107,7 @@ class Common(Configuration):
 
     # Password Validation
     # https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#module-django.contrib.auth.password_validation
-    AUTH_PASSWORD_VALIDATORS = [
-        {
-            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        },
-        {
-            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        },
-        {
-            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-        },
-        {
-            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-        },
-    ]
+    AUTH_PASSWORD_VALIDATORS = []
 
     # Logging
     LOGGING = {
@@ -183,7 +174,7 @@ class Common(Configuration):
     # Django Rest Framework
     REST_FRAMEWORK = {
         'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-        'PAGE_SIZE': int(os.getenv('DJANGO_PAGINATION_LIMIT', 10)),
+        'PAGE_SIZE': int(os.getenv('DJANGO_PAGINATION_LIMIT', 100)),
         'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
         'DEFAULT_RENDERER_CLASSES': (
             'rest_framework.renderers.JSONRenderer',
