@@ -28,10 +28,11 @@ class Base(Configuration):
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
-        # 'django.middleware.cache.CacheMiddleware'
+        'django.middleware.cache.UpdateCacheMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.cache.FetchFromCacheMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
@@ -55,8 +56,8 @@ class Base(Configuration):
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': os.getenv('DB_NAME', 'todo'),
             'USER': os.getenv('DB_USER', 'todo'),
-            'PASSWORD': os.getenv('DB_PASSWORD', 'todo'),
-            'HOST': 'localhost',
+            'PASSWORD': os.getenv('DB_PASS', 'todo'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': '5432',
         }
     }
